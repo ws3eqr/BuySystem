@@ -3,30 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS3EQR | ULTIMATE STORE</title>
-    <!-- Иконки и Шрифты -->
+    <title>WS3EQR | PREMIUM MARKET</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Живой фон (всегда сзади) -->
+    <!-- Эффекты фона -->
     <div class="animated-bg"></div>
     <div class="noise-overlay"></div>
+    <div id="snow-container"></div>
 
     <!-- Навигация -->
     <nav>
         <div class="logo">WS3EQR</div>
-        <a href="https://t.me/ws3eqr" class="tg-btn"><i class="fa-brands fa-telegram"></i> СВЯЗАТЬСЯ</a>
+        <div class="nav-controls">
+            <button class="icon-btn" onclick="toggleSettings()"><i class="fa-solid fa-gear"></i></button>
+            <a href="https://t.me/ws3eqr" class="tg-btn"><i class="fa-brands fa-telegram"></i> TELEGRAM</a>
+        </div>
     </nav>
+
+    <!-- Окно Настроек -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>НАСТРОЙКИ</h3>
+                <button onclick="toggleSettings()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="setting-item">
+                <span>Новогодний Вайб ❄️</span>
+                <label class="switch">
+                    <input type="checkbox" id="festive-toggle" onchange="toggleFestive()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <span>Язык / Language</span>
+                <div class="lang-select">
+                    <button class="active">RU</button>
+                    <button onclick="alert('English coming soon!')">EN</button>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span>Эффекты фона</span>
+                <label class="switch">
+                    <input type="checkbox" checked onchange="toggleBgAnim(this)">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
 
     <!-- Главный экран -->
     <header class="hero">
         <div class="hero-content">
-            <h1>DIGITAL<br><span>MARKET</span></h1>
-            <p>ЛУЧШИЕ РЕШЕНИЯ ДЛЯ ТВОЕГО ПРОЕКТА</p>
-            <a href="#shop" class="scroll-down">ВЫБРАТЬ УСЛУГУ ▼</a>
+            <h1>DIGITAL<br><span class="gradient-text">MARKETPLACE</span></h1>
+            <p>ПРОФЕССИОНАЛЬНЫЕ РЕШЕНИЯ</p>
+            <a href="#shop" class="scroll-down">К ТАРИФАМ ▼</a>
         </div>
     </header>
 
@@ -44,9 +78,10 @@
                 <h3>НУБ-ТАРИФ</h3>
                 <div class="price">75 ₽</div>
                 <ul class="features">
-                    <li>Простой HTML</li>
-                    <li>Текст + Картинки</li>
-                    <li>Быстрый старт</li>
+                    <li><i class="fa-solid fa-check"></i> Чистый HTML5 код</li>
+                    <li><i class="fa-solid fa-check"></i> Адаптация под ПК</li>
+                    <li><i class="fa-solid fa-check"></i> Быстрая загрузка</li>
+                    <li><i class="fa-solid fa-check"></i> Помощь с запуском</li>
                 </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
@@ -56,9 +91,10 @@
                 <h3>ИГРОК-ТАРИФ</h3>
                 <div class="price">150 ₽</div>
                 <ul class="features">
-                    <li>HTML + CSS</li>
-                    <li>Красивый дизайн</li>
-                    <li>Адаптация</li>
+                    <li><i class="fa-solid fa-check"></i> HTML5 + CSS3</li>
+                    <li><i class="fa-solid fa-check"></i> Современный дизайн</li>
+                    <li><i class="fa-solid fa-check"></i> Анимации кнопок</li>
+                    <li><i class="fa-solid fa-check"></i> Мобильная версия</li>
                 </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
@@ -69,59 +105,49 @@
                 <h3>ПРО-ТАРИФ</h3>
                 <div class="price">235 ₽</div>
                 <ul class="features">
-                    <li>HTML + CSS + JS</li>
-                    <li>Анимации</li>
-                    <li>Интерактив</li>
-                </ul>
-                <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
-            </div>
-            <!-- Босс -->
-            <div class="card">
-                <div class="glow"></div>
-                <h3>БОСС-ТАРИФ</h3>
-                <div class="price">300 ₽</div>
-                <ul class="features">
-                    <li>Full Лендинг</li>
-                    <li>Мобильная версия</li>
-                    <li>SEO настройка</li>
+                    <li><i class="fa-solid fa-check"></i> <b>Все из Игрока +</b></li>
+                    <li><i class="fa-solid fa-check"></i> JavaScript Логика</li>
+                    <li><i class="fa-solid fa-check"></i> Интерактивные элементы</li>
+                    <li><i class="fa-solid fa-check"></i> SEO Оптимизация</li>
                 </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
             <!-- Король -->
             <div class="card wide">
                 <div class="glow"></div>
-                <h3>КОРОЛЕВСКИЙ</h3>
+                <h3>КОРОЛЕВСКИЙ VIP</h3>
                 <div class="price gold-text">600 ₽</div>
-                <p>Полный комплект. Админка, база данных, сложная логика, поддержка 24/7.</p>
-                <a href="https://t.me/ws3eqr" class="buy-btn gold-btn">ЗАКАЗАТЬ VIP</a>
+                <p>Полный комплект под ключ. Админ-панель, Базы Данных, Сложные скрипты, Исходный код и Приоритетная поддержка.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn gold-btn">ОФОРМИТЬ VIP</a>
             </div>
         </div>
 
-        <!-- КАТЕГОРИЯ: АВАТАРКИ -->
+        <!-- КАТЕГОРИЯ: ДИЗАЙН -->
         <div class="category-header">
-            <h2><i class="fa-solid fa-paintbrush"></i> ДИЗАЙН & АВЫ</h2>
+            <h2><i class="fa-solid fa-paintbrush"></i> ГРАФИКА</h2>
         </div>
         <div class="cards-wrapper">
             <div class="card">
                 <div class="glow"></div>
-                <h3>НУБ АВА</h3>
+                <h3>ЛАЙТ АВА</h3>
                 <div class="price">40 ₽</div>
-                <p>Текст на фоне, цветокоррекция.</p>
+                <ul class="features">
+                    <li><i class="fa-solid fa-check"></i> Красивый фон</li>
+                    <li><i class="fa-solid fa-check"></i> Ваш Никнейм</li>
+                    <li><i class="fa-solid fa-check"></i> Цветокоррекция</li>
+                </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
             <div class="card">
                 <div class="glow"></div>
-                <h3>ИГРОК АВА</h3>
-                <div class="price">60 ₽</div>
-                <p>Эффекты, рамки, детализация.</p>
-                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
-            </div>
-            <div class="card popular">
-                <div class="badge">ТОП</div>
-                <div class="glow"></div>
                 <h3>ПРО АВА</h3>
                 <div class="price">100 ₽</div>
-                <p>3D текст, глитч, профессиональный арт.</p>
+                <ul class="features">
+                    <li><i class="fa-solid fa-check"></i> 3D Текст / Глитч</li>
+                    <li><i class="fa-solid fa-check"></i> Сложная композиция</li>
+                    <li><i class="fa-solid fa-check"></i> Исходник (PSD)</li>
+                    <li><i class="fa-solid fa-check"></i> 3 Варианта</li>
+                </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
         </div>
@@ -131,35 +157,22 @@
             <h2><i class="fa-solid fa-cubes"></i> MINECRAFT СЕРВЕРА</h2>
         </div>
         <div class="cards-wrapper">
+            <!-- Минимум (Улучшенный) -->
             <div class="card">
                 <div class="glow"></div>
-                <h3>МИНИМУМ</h3>
+                <h3>СТАРТОВЫЙ</h3>
                 <div class="price">40 ₽</div>
-                <p>Установка ядра, порты.</p>
+                <ul class="features">
+                    <li><i class="fa-solid fa-check"></i> Установка Ядра (Spigot/Paper)</li>
+                    <li><i class="fa-solid fa-check"></i> Настройка server.properties</li>
+                    <li><i class="fa-solid fa-check"></i> Открытие портов</li>
+                    <li><i class="fa-solid fa-check"></i> Оптимизация запуска</li>
+                </ul>
                 <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
+            <!-- Базовый -->
             <div class="card">
                 <div class="glow"></div>
-                <h3>БАЗОВЫЙ</h3>
+                <h3>СЕРВЕР+</h3>
                 <div class="price">100 ₽</div>
-                <p>Плагины AuthMe, Essentials.</p>
-                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
-            </div>
-            <div class="card popular">
-                <div class="glow"></div>
-                <h3>ПРО СБОРКА</h3>
-                <div class="price">200 ₽</div>
-                <p>Спавн, Донат, Меню, Защита.</p>
-                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
-            </div>
-        </div>
-
-    </div>
-
-    <footer>
-        <p>WS3EQR PRODUCTION © 2024</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                <ul class="featur
