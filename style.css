@@ -1,11 +1,16 @@
-/* --- БАЗА --- */
+/* --- ОСНОВА --- */
 :root {
     --bg: #050505;
     --card: rgba(255, 255, 255, 0.05);
     --accent: #00ff88;
     --text: #ffffff;
     --gold: #ffd700;
-    --festive-red: #ff4444; /* Для НГ режима */
+}
+
+/* Переменные для НГ режима */
+body.festive {
+    --accent: #ff4444; /* Красный */
+    --gold: #fff700;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,39 +22,40 @@ body {
     overflow-x: hidden;
 }
 
-a { text-decoration: none; }
+a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
 /* --- ФОН --- */
 .animated-bg {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at 50% 50%, #1a1a2e, #000);
-    z-index: -2;
+    z-index: -2; transition: 0.5s;
 }
+body.festive .animated-bg {
+    background: radial-gradient(circle at 50% 50%, #2e0a0a, #000); /* Красный фон */
+}
+
 .noise-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: url('https://www.transparenttextures.com/patterns/stardust.png');
     opacity: 0.3; pointer-events: none; z-index: -1;
 }
 
-/* НОВОГОДНИЙ РЕЖИМ */
-body.festive .animated-bg {
-    background: radial-gradient(circle at 50% 50%, #2c0a0a, #000); /* Красный оттенок */
-}
-body.festive { --accent: #ffd700; } /* Золотой акцент */
-body.festive .buy-btn:hover { background: #ff4444; border-color: #ff4444; color: #fff; }
-
 /* Снег */
-.snowflake {
-    position: fixed; top: -10px; color: #fff; font-size: 1em; opacity: 0.8;
-    animation: fall linear infinite; z-index: 9999; pointer-events: none;
+#snow-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 9999; display: none;
 }
-@keyframes fall { to { transform: translateY(100vh); } }
+.snowflake {
+    position: absolute; top: -10px; color: #fff;
+    animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(105vh); } }
 
 /* --- НАВИГАЦИЯ --- */
 nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 5%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    padding: 15px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px);
     position: fixed; top: 0; width: 100%; z-index: 100;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -57,10 +63,11 @@ nav {
 .nav-controls { display: flex; gap: 15px; align-items: center; }
 
 .icon-btn {
-    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff;
-    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; transition: 0.3s;
 }
-.icon-btn:hover { background: #fff; color: #000; }
+.icon-btn:hover { background: #fff; color: #000; transform: rotate(90deg); }
 
 .tg-btn {
     background: #0088cc; color: #fff; padding: 10px 20px; border-radius: 30px;
@@ -68,51 +75,62 @@ nav {
 }
 .tg-btn:hover { box-shadow: 0 0 15px #0088cc; transform: scale(1.05); }
 
-/* --- НАСТРОЙКИ (MODAL) --- */
+/* --- МОДАЛЬНОЕ ОКНО (НАСТРОЙКИ) --- */
 .modal {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); z-index: 2000; display: none;
-    align-items: center; justify-content: center; backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.8); z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s;
 }
-.modal.active { display: flex; }
+.modal.open { display: flex; opacity: 1; }
+
 .modal-content {
     background: #111; border: 1px solid rgba(255,255,255,0.2);
-    padding: 30px; border-radius: 20px; width: 320px;
+    padding: 30px; border-radius: 20px; width: 350px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    transform: scale(0.8); transition: transform 0.3s;
 }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-header button { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+.modal.open .modal-content { transform: scale(1); }
 
-.setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.lang-select button {
-    background: #333; border: none; color: #aaa; padding: 5px 10px; cursor: pointer;
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+.setting-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.lang-select button.active { background: var(--accent); color: #000; font-weight: bold; }
+.setting-item:last-child { border-bottom: none; }
+.setting-text span { display: block; font-weight: bold; font-size: 1rem; }
+.setting-text small { color: #888; font-size: 0.8rem; }
 
-/* Переключатель */
-.switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+/* Свитч */
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
 .switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .4s; border-radius: 20px; }
-.slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
 input:checked + .slider { background-color: var(--accent); }
-input:checked + .slider:before { transform: translateX(20px); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+.lang-switch button {
+    background: #222; border: 1px solid #444; color: #888;
+    padding: 5px 12px; cursor: pointer; border-radius: 5px;
+}
+.lang-switch button.active { background: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
 
 /* --- HERO --- */
 .hero {
-    min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    min-height: 85vh; display: flex; align-items: center; justify-content: center;
     text-align: center; padding-top: 60px;
 }
-.hero h1 { 
-    font-size: clamp(2.5rem, 5vw, 5rem); /* Адаптивный размер */
-    font-weight: 900; line-height: 1.1; margin-bottom: 20px; 
-}
+.hero h1 { font-size: clamp(3rem, 6vw, 6rem); font-weight: 900; line-height: 1; margin-bottom: 20px; }
 .gradient-text {
     background: linear-gradient(to right, #fff, var(--accent));
     -webkit-background-clip: text; color: transparent;
 }
-.hero p { font-size: 1.1rem; letter-spacing: 3px; margin-bottom: 40px; color: #ccc; }
+.hero p { font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 40px; color: #ccc; }
 .scroll-down {
-    color: #fff; border: 1px solid rgba(255,255,255,0.5); padding: 12px 35px;
-    font-weight: bold; border-radius: 50px; transition: 0.3s;
+    color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 15px 40px;
+    font-weight: 800; border-radius: 50px; transition: 0.3s;
 }
 .scroll-down:hover { background: var(--accent); border-color: var(--accent); color: #000; }
 
@@ -120,41 +138,45 @@ input:checked + .slider:before { transform: translateX(20px); }
 .container { padding: 50px 5%; max-width: 1400px; margin: 0 auto; }
 
 .category-header {
-    margin-top: 60px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 10px;
+    margin-top: 80px; margin-bottom: 30px; border-bottom: 2px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
 }
-.category-header h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+.category-header h2 { font-size: 2rem; font-weight: 800; }
 .category-header i { color: var(--accent); margin-right: 10px; }
 
-/* Сетка */
-.cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.cards-wrapper { display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
 
-/* Карточка */
+/* КАРТОЧКА */
 .card {
     background: var(--card); backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px;
-    flex: 1 1 300px; max-width: 380px; position: relative; overflow: hidden;
+    flex: 1 1 300px; max-width: 400px; position: relative; overflow: hidden;
     transition: 0.4s ease; display: flex; flex-direction: column;
 }
-.card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
 
-.card h3 { font-size: 1.4rem; margin-bottom: 5px; font-weight: 800; }
-.price { font-size: 2.2rem; font-weight: 900; color: var(--accent); margin-bottom: 20px; }
-.gold-text { color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
+.card h3 { font-size: 1.5rem; margin-bottom: 5px; font-weight: 800; }
+.price { font-size: 2.5rem; font-weight: 900; color: var(--accent); margin-bottom: 25px; }
+.gold-text { color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.4); }
 
-.features li { margin-bottom: 8px; color: #ccc; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
-.features i { color: var(--accent); font-size: 0.8rem; }
+.features li { margin-bottom: 10px; color: #ccc; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
+.features i { color: var(--accent); }
 
 .buy-btn {
-    margin-top: auto; width: 100%; padding: 15px; background: rgba(255,255,255,0.1);
-    color: #fff; font-weight: 900; border-radius: 10px; text-align: center;
-    transition: 0.3s; margin-top: 20px;
+    margin-top: auto; width: 100%; padding: 15px; background: rgba(255,255,255,0.05);
+    color: #fff; font-weight: 800; border-radius: 12px; text-align: center;
+    transition: 0.3s; margin-top: 25px; border: 1px solid rgba(255,255,255,0.1);
 }
-.buy-btn:hover { background: var(--accent); color: #000; }
-.gold-btn:hover { background: var(--gold); }
+.buy-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+.gold-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
 
-/* Особые стили */
-.card.popular { border: 1px solid var(--accent); background: rgba(0, 255, 136, 0.05); }
+/* ПОПУЛЯРНЫЙ / VIP */
+.card.popular { border: 2px solid var(--accent); background: rgba(0, 255, 136, 0.03); transform: scale(1.05); }
+.card.popular:hover { transform: scale(1.05) translateY(-10px); }
 .badge {
     position: absolute; top: 0; right: 0; background: var(--accent); color: #000;
-    padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 15px; fo
+    padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 15px;
+}
+.card.wide { max-width: 100%; flex-basis: 100%; border-color: var(--gold); background: linear-gradient(45deg, rgba(255,215,0,0.05), transparent); }
+
+footer { text-align: center; padding: 50px; color: #555; margin-top: 100px; border-top: 1px solid #222; }
