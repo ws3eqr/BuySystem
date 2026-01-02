@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WS3EQR | WEB STUDIO</title>
+    <style>
+        /* --- 0. БАЗОВЫЕ НАСТРОЙКИ --- */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;800&family=Montserrat:wght@900&display=swap');
+
+        :root {
+            --bg: #050505;
+            --panel: rgba(15, 15, 20, 0.85);
+            --border: #333;
+            --accent: #00ff88; /* Хакерский зеленый */
+            --accent-sec: #00ccff; /* Кибер синий */
+            --gold: #ffd700;
+            --text: #e0e0e0;
+            --font-main: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); overflow: hidden; height: 100vh; }
+
+        /* --- 1. СТРОГОЕ ИНТРО (ЧЕРНОЕ, БЕЗ ПОДСВЕТКИ) --- */
+        #intro-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease, visibility 1s;
+        }
+        
+        .intro-logo {
+            font-family: 'Montserrat', sans-serif; font-size: 4rem; letter-spacing: -2px;
+            color: #fff; text-transform: uppercase; margin-bottom: 20px;
+            /* Строгий стиль без теней и свечения по запросу */
+        }
+        
+        .intro-sub {
+            font-size: 0.8rem; color: #444; letter-spacing: 5px; text-transform: uppercase;
+            animation: fadeIn 2s ease-in;
+        }
+
+        /* --- 2. ФОНОВЫЕ ЭФФЕКТЫ (МАТРИЦА КОДА) --- */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.15; pointer-events: none;
+        }
+        
+        /* Декорации "Забитого интерфейса" */
+        .overlay-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 10;
+        }
+
+        /* --- 3. ОСНОВНОЙ ИНТЕРФЕЙС --- */
+        #main-app {
+            position: relative; z-index: 20; width: 100%; height: 100%;
+            display: flex; opacity: 0; transition: opacity 1.5s ease;
+        }
+
+        /* Сайдбар (Декор) */
+        .sidebar-decor {
+            width: 60px; height: 100%; border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; padding: 20px 0;
+            background: #080808; font-size: 0.6rem; color: #555;
+        }
+        .decor-line { width: 1px; height: 50px; background: #333; margin: 10px 0; }
+        .sys-stat { writing-mode: vertical-rl; transform: rotate(180deg); margin: 20px 0; letter-spacing: 2px; }
+
+        /* Контентная область */
+        .content-wrapper { flex: 1; display: flex; flex-direction: column; padding: 20px; overflow: hidden; }
+
+        /* Хедер */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 20px;
+        }
+        .brand { font-size: 1.5rem; font-weight: 800; color: #fff; }
+        .brand span { color: var(--accent); }
+        .status { font-size: 0.8rem; color: var(--accent-sec); border: 1px solid var(--accent-sec); padding: 5px 10px; }
+
+        /* Навигация (Вкладки) */
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+        .tab-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            color: #888; padding: 10px 20px; cursor: pointer; transition: 0.3s;
+            font-family: var(--font-main); font-weight: bold; flex: 1; text-align: center;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .tab-btn.active {
+            background: var(--accent); color: #000; border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Область контента с прокруткой */
+        .scroll-area { flex: 1; overflow-y: auto; padding-right: 10px; }
+        
+        /* Сетка тарифов */
+        .grid-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+            display: none; /* Скрыто по умолчанию */
+            animation: slideUp 0.5s ease;
+        }
+        .grid-container.show { display: grid; }
+
+        /* Карточка тарифа */
+        .card {
+            background: var(--panel); border: 1px solid var(--border); padding: 25px;
+            position: relative; transition: 0.3s; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+            background: var(--border); transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card:hover::before { background: var(--accent); }
+
+        .card h3 { font-size: 1.4rem; margin-bottom: 10px; color: #fff; }
+        .card .price { font-size: 1.8rem; color: var(--accent); margin-bottom: 15px; font-weight: 800; }
+        .card .desc { font-size: 0.85rem; color: #aaa; line-height: 1.6; margin-bottom: 20px; }
+        .card ul { list-style: none; margin-bottom: 20px; font-size: 0.8rem; color: #888; }
+        .card ul li::before { content: '> '; color: var(--accent); }
+
+        /* Особые стили для тарифов */
+        .card.royal { border-color: var(--gold); }
+        .card.royal:hover { border-color: var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+        .card.royal::before { background: var(--gold); }
+        .card.royal .price { color: var(--gold); }
+
+        /* Кнопка заказа */
+        .order-btn {
+            display: block; width: 100%; padding: 12px; text-align: center;
+            background: transparent; border: 1px solid var(--text); color: var(--text);
+            text-decoration: none; font-weight: bold; transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .order-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); letter-spacing: 2px; }
+
+        /* Футер (Контакты) */
+        footer {
+            border-top: 1px solid var(--border); padding-top: 20px; margin-top: 20px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #666;
+        }
+        .telegram-link {
+            color: var(--accent-sec); text-decoration: none; font-size: 1.1rem; font-weight: bold;
+            border: 1px solid var(--accent-sec); padding: 10px 20px;
+            animation: pulse 2s infinite;
+        }
+
+        /* --- СКРОЛЛБАР --- */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+        /* --- АНИМАЦИИ --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 204, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 204, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 204, 255, 0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. ИНТРО СЛОЙ -->
+    <div id="intro-layer">
+        <div class="intro-logo">WS3EQR</div>
+        <div class="intro-sub">SYSTEM INITIALIZATION...</div>
+    </div>
+
+    <!-- 2. ФОНОВЫЙ КАНВАС ДЛЯ КОДА -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="overlay-grid"></div>
+
+    <!-- 3. ГЛАВНОЕ ПРИЛОЖЕНИЕ -->
+    <div id="main-app">
+        <!-- Левая панель (Декор) -->
+        <div class="sidebar-decor">
+            <div>SYS</div>
+            <div class="decor-line"></div>
+            <div class="sys-stat">CPU: 45%</div>
+            <div class="sys-stat">RAM: 12GB</div>
+            <div class="decor-line"></div>
+            <div>NET</div>
+        </div>
+
+        <div class="content-wrapper">
+            <header>
+                <div class="brand">WS3<span>EQR</span> STUDIO</div>
+                <div class="status">ONLINE // SYSTEM READY</div>
+            </header>
+
+            <div class="tabs">
+                <div class="tab-btn active" onclick="switchTab('sites')">САЙТЫ</div>
+                <div class="tab-btn" onclick="switchTab('avatars')">АВАТАРКИ</div>
+                <div class="tab-btn" onclick="switchTab('minecraft')">MINECRAFT</div>
+            </div>
+
+            <div class="scroll-area">
+                
+                <!-- ВКЛАДКА: САЙТЫ -->
+                <div id="sites" class="grid-container show">
+                    <!-- Нуб -->
+                    <div class="card">
+                        <h3>Нуб-Тариф</h3>
+                        <div class="price">75 ₽</div>
+                        <div class="desc">Базовый HTML сайт. Просто текст и картинки. Для начала.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <!-- Игрок -->
+                    <div class="card">
+                        <h3>Игрок-Тариф</h3>
+                        <div class="price">150 ₽</div>
+                        <div class="desc">HTML + CSS. Красивые цвета, шрифты и базовое оформление.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <!-- Про -->
+                    <div class="card">
+                        <h3>Про-Тариф</h3>
+                        <div class="price">235 ₽</div>
+                        <div class="desc">Добавляем JavaScript. Анимации, кнопки, интерактив.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <!-- Босс -->
+                    <div class="card">
+                        <h3>Босс-Тариф</h3>
+                        <div class="price">300 ₽</div>
+                        <div class="desc">Полноценный лендинг. Адаптация под мобильные, SEO, формы.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <!-- Гигант -->
+                    <div class="card royal">
+                        <h3>КОРОЛЕВСКИЙ</h3>
+                        <div class="price">600 ₽</div>
+                        <div class="desc">ГИГАНТ. Всё включено. Сложные скрипты, админка, поддержка.</div>
+                        <ul>
+                            <li>Приоритетная поддержка</li>
+                            <li>Уникальный дизайн</li>
+                            <li>Исходный код</li>
+                        </ul>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ VIP</a>
+                    </div>
+                </div>
+
+                <!-- ВКЛАДКА: АВАТАРКИ -->
+                <div id="avatars" class="grid-container">
+                    <div class="card">
+                        <h3>Нуб Ава</h3>
+                        <div class="price">40 ₽</div>
+                        <div class="desc">Простая обработка, текст на фоне.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <div class="card">
+                        <h3>Игрок Ава</h3>
+                        <div class="price">60 ₽</div>
+                        <div class="desc">Добавление эффектов, цветокоррекция, рамки.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <div class="card">
+                        <h3>Про Ава</h3>
+                        <div class="price">100 ₽</div>
+                        <div class="desc">Сложный дизайн, 3D текст, глитч-эффекты.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                </div>
+
+                <!-- ВКЛАДКА: МАЙНКРАФТ -->
+                <div id="minecraft" class="grid-container">
+                    <div class="card">
+                        <h3>Минимальный</h3>
+                        <div class="price">40 ₽</div>
+                        <div class="desc">Установка ядра, настройка server.properties.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <div class="card">
+                        <h3>Базовый</h3>
+                        <div class="price">100 ₽</div>
+                        <div class="desc">Установка плагинов (Essentials, AuthMe), пермишены.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                    <div class="card">
+                        <h3>Про Сервер</h3>
+                        <div class="price">200 ₽</div>
+                        <div class="desc">Полная сборка. Спавн, магазины, авто-донат, защита.</div>
+                        <a href="https://t.me/ws3eqr" class="order-btn">ЗАКАЗАТЬ</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer>
+                <div>SYSTEM_ID: WS-8842 // SECURE CONNECTION</div>
+                <a href="https://t.me/ws3eqr" class="telegram-link">@ws3eqr</a>
+            </footer>
+        </div>
+    </div>
+
+<!-- ... ПРОДОЛЖЕНИЕ СЛЕДУЕТ ... -->
