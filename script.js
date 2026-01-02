@@ -1,82 +1,48 @@
-// --- 1. НАСТРОЙКА МАТРИЦЫ (ФОН) ---
-const canvas = document.getElementById('matrix-bg');
-const ctx = canvas.getContext('2d');
+// Ждем загрузки страницы
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Находим все элементы с классом 'tilt'
+    const tiltElements = document.querySelectorAll('.tilt');
 
-let w = canvas.width = window.innerWidth;
-let h = canvas.height = window.innerHeight;
+    tiltElements.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            // Вычисляем координаты мыши внутри карточки
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top; 
 
-// Символы: Латиница, цифры и спецсимволы
-const chars = 'WS3EQR_010101_<>{}[]*&^%$#@!ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const drops = [];
-const fontSize = 14;
-const columns = w / fontSize;
+            // Центр карточки
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
 
-// Инициализация капель
-for(let i = 0; i < columns; i++) {
-    drops[i] = 1;
-}
+            // Вычисляем угол поворота (максимум 15 градусов)
+            const rotateX = ((y - centerY) / centerY) * -10; 
+            const rotateY = ((x - centerX) / centerX) * 10; 
 
-function drawMatrix() {
-    // Полупрозрачный черный для эффекта следа
-    ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-    ctx.fillRect(0, 0, w, h);
+            // Применяем стили (поворот + блик)
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            
+            // Эффект динамического света (блик)
+            // Добавляем градиент поверх карточки
+            card.style.backgroundImage = `
+                linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%)
+            `;
+        });
 
-    ctx.fillStyle = '#00ff88'; // Цвет текста (Зеленый)
-    ctx.font = fontSize + 'px JetBrains Mono';
+        // Когда мышь уходит, возвращаем карточку на место
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            card.style.backgroundImage = 'none';
+        });
+    });
 
-    for(let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        // Случайный сброс капли наверх
-        if(drops[i] * fontSize > h && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
-    }
-}
-
-// Запуск анимации (30 кадров в секунду)
-setInterval(drawMatrix, 33);
-
-// При изменении размера окна обновляем канвас
-window.addEventListener('resize', () => {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+    // Плавный скролл для навигации
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 });
-
-
-// --- 2. ЛОГИКА ИНТЕРФЕЙСА ---
-
-// Интро (срабатывает при загрузке)
-window.onload = () => {
-    setTimeout(() => {
-        const intro = document.getElementById('intro-layer');
-        const app = document.getElementById('app-interface');
-
-        // Скрываем интро
-        intro.style.opacity = '0';
-        intro.style.pointerEvents = 'none';
-
-        // Показываем приложение
-        app.style.opacity = '1';
-    }, 2000); // 2000мс = 2 секунды
-};
-
-// Переключение вкладок
-function openTab(tabName) {
-    // 1. Скрываем все сетки с товарами
-    const grids = document.querySelectorAll('.grid');
-    grids.forEach(grid => grid.classList.remove('active'));
-
-    // 2. Убираем активный класс у всех кнопок
-    const btns = document.querySelectorAll('.tab-btn');
-    btns.forEach(btn => btn.classList.remove('active'));
-
-    // 3. Показываем нужную сетку
-    document.getElementById(tabName).classList.add('active');
-
-    // 4. Подсвечиваем нажатую кнопку
-    // (находим кнопку по тексту onclick)
-    event.currentTarget.classList.add('active');
-}
