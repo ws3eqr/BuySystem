@@ -1,138 +1,160 @@
-/* --- СБРОС --- */
+/* --- БАЗА --- */
+:root {
+    --bg: #050505;
+    --card: rgba(255, 255, 255, 0.05);
+    --accent: #00ff88;
+    --text: #ffffff;
+    --gold: #ffd700;
+    --festive-red: #ff4444; /* Для НГ режима */
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Montserrat', sans-serif;
-    color: #fff;
-    background: #050505;
+    color: var(--text);
+    background: var(--bg);
     overflow-x: hidden;
 }
 
 a { text-decoration: none; }
+ul { list-style: none; }
 
-/* --- ЖИВОЙ ФОН --- */
+/* --- ФОН --- */
 .animated-bg {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background: radial-gradient(circle at 50% 50%, #1a1a2e, #000);
     z-index: -2;
 }
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Эффект шума (зернистость) */
 .noise-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: url('https://www.transparenttextures.com/patterns/stardust.png');
-    opacity: 0.4; z-index: -1; pointer-events: none;
+    opacity: 0.3; pointer-events: none; z-index: -1;
 }
+
+/* НОВОГОДНИЙ РЕЖИМ */
+body.festive .animated-bg {
+    background: radial-gradient(circle at 50% 50%, #2c0a0a, #000); /* Красный оттенок */
+}
+body.festive { --accent: #ffd700; } /* Золотой акцент */
+body.festive .buy-btn:hover { background: #ff4444; border-color: #ff4444; color: #fff; }
+
+/* Снег */
+.snowflake {
+    position: fixed; top: -10px; color: #fff; font-size: 1em; opacity: 0.8;
+    animation: fall linear infinite; z-index: 9999; pointer-events: none;
+}
+@keyframes fall { to { transform: translateY(100vh); } }
 
 /* --- НАВИГАЦИЯ --- */
 nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 5%; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-    position: fixed; top: 0; width: 100%; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 15px 5%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+.nav-controls { display: flex; gap: 15px; align-items: center; }
+
+.icon-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s;
+}
+.icon-btn:hover { background: #fff; color: #000; }
+
 .tg-btn {
     background: #0088cc; color: #fff; padding: 10px 20px; border-radius: 30px;
-    font-weight: 700; transition: 0.3s;
+    font-weight: 700; transition: 0.3s; font-size: 0.9rem;
 }
-.tg-btn:hover { box-shadow: 0 0 20px #0088cc; transform: scale(1.05); }
+.tg-btn:hover { box-shadow: 0 0 15px #0088cc; transform: scale(1.05); }
 
-/* --- HERO СЕКЦИЯ --- */
-.hero {
-    height: 100vh; display: flex; align-items: center; justify-content: center;
-    text-align: center;
+/* --- НАСТРОЙКИ (MODAL) --- */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 2000; display: none;
+    align-items: center; justify-content: center; backdrop-filter: blur(5px);
 }
-.hero h1 { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 20px; }
-.hero h1 span { color: #00ff88; text-shadow: 0 0 30px rgba(0,255,136,0.5); }
-.hero p { font-size: 1.2rem; letter-spacing: 5px; margin-bottom: 40px; color: #ccc; }
+.modal.active { display: flex; }
+.modal-content {
+    background: #111; border: 1px solid rgba(255,255,255,0.2);
+    padding: 30px; border-radius: 20px; width: 320px;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header button { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; }
+
+.setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.lang-select button {
+    background: #333; border: none; color: #aaa; padding: 5px 10px; cursor: pointer;
+}
+.lang-select button.active { background: var(--accent); color: #000; font-weight: bold; }
+
+/* Переключатель */
+.switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .4s; border-radius: 20px; }
+.slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* --- HERO --- */
+.hero {
+    min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding-top: 60px;
+}
+.hero h1 { 
+    font-size: clamp(2.5rem, 5vw, 5rem); /* Адаптивный размер */
+    font-weight: 900; line-height: 1.1; margin-bottom: 20px; 
+}
+.gradient-text {
+    background: linear-gradient(to right, #fff, var(--accent));
+    -webkit-background-clip: text; color: transparent;
+}
+.hero p { font-size: 1.1rem; letter-spacing: 3px; margin-bottom: 40px; color: #ccc; }
 .scroll-down {
-    color: #fff; border: 1px solid #fff; padding: 15px 40px;
+    color: #fff; border: 1px solid rgba(255,255,255,0.5); padding: 12px 35px;
     font-weight: bold; border-radius: 50px; transition: 0.3s;
 }
-.scroll-down:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; }
+.scroll-down:hover { background: var(--accent); border-color: var(--accent); color: #000; }
 
 /* --- МАГАЗИН --- */
 .container { padding: 50px 5%; max-width: 1400px; margin: 0 auto; }
 
 .category-header {
-    margin-top: 80px; margin-bottom: 30px; border-bottom: 2px solid rgba(255,255,255,0.1);
+    margin-top: 60px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1);
     padding-bottom: 10px;
 }
-.category-header h2 { font-size: 2rem; font-weight: 800; text-transform: uppercase; }
-.category-header i { color: #00ff88; margin-right: 10px; }
+.category-header h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+.category-header i { color: var(--accent); margin-right: 10px; }
 
-/* СЕТКА КАРТОЧЕК (FLEXBOX) */
-.cards-wrapper {
-    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
-}
+/* Сетка */
+.cards-wrapper { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
 
-/* КАРТОЧКА */
+/* Карточка */
 .card {
-    background: rgba(255, 255, 255, 0.05); /* Стекло */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px; padding: 30px;
-    flex: 1 1 300px; /* Адаптивная ширина: мин 300px */
-    max-width: 400px; /* Чтобы не растягивались слишком сильно */
-    position: relative; overflow: hidden;
-    transition: 0.4s ease; display: flex; flex-direction: column; align-items: center; text-align: center;
+    background: var(--card); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px;
+    flex: 1 1 300px; max-width: 380px; position: relative; overflow: hidden;
+    transition: 0.4s ease; display: flex; flex-direction: column;
 }
+.card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 
-.card:hover {
-    transform: translateY(-10px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #00ff88;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
+.card h3 { font-size: 1.4rem; margin-bottom: 5px; font-weight: 800; }
+.price { font-size: 2.2rem; font-weight: 900; color: var(--accent); margin-bottom: 20px; }
+.gold-text { color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
 
-/* Свечение при наведении */
-.glow {
-    position: absolute; width: 100px; height: 100px;
-    background: radial-gradient(circle, rgba(0,255,136,0.4), transparent 70%);
-    border-radius: 50%; pointer-events: none; opacity: 0; transition: 0.3s;
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-}
-.card:hover .glow { opacity: 1; width: 300px; height: 300px; }
+.features li { margin-bottom: 8px; color: #ccc; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+.features i { color: var(--accent); font-size: 0.8rem; }
 
-.card h3 { font-size: 1.5rem; margin-bottom: 10px; z-index: 2; }
-.price { font-size: 2.5rem; font-weight: 900; color: #00ff88; margin-bottom: 20px; z-index: 2; }
-.gold-text { color: #ffd700; text-shadow: 0 0 20px #ffd700; }
-
-.features { list-style: none; margin-bottom: 30px; z-index: 2; color: #aaa; }
-.features li { margin-bottom: 5px; }
-
-/* Кнопка купить */
 .buy-btn {
-    margin-top: auto; /* Прижимает кнопку к низу */
-    width: 100%; padding: 15px; background: transparent;
-    border: 2px solid #fff; color: #fff; font-weight: 900; border-radius: 10px;
-    z-index: 2; transition: 0.3s;
+    margin-top: auto; width: 100%; padding: 15px; background: rgba(255,255,255,0.1);
+    color: #fff; font-weight: 900; border-radius: 10px; text-align: center;
+    transition: 0.3s; margin-top: 20px;
 }
-.buy-btn:hover { background: #00ff88; border-color: #00ff88; color: #000; box-shadow: 0 0 30px #00ff88; }
-.gold-btn:hover { background: #ffd700; border-color: #ffd700; box-shadow: 0 0 30px #ffd700; }
+.buy-btn:hover { background: var(--accent); color: #000; }
+.gold-btn:hover { background: var(--gold); }
 
-/* Особые карточки */
-.card.popular { border: 2px solid #00ff88; transform: scale(1.05); }
-.card.popular:hover { transform: scale(1.08) translateY(-10px); }
+/* Особые стили */
+.card.popular { border: 1px solid var(--accent); background: rgba(0, 255, 136, 0.05); }
 .badge {
-    position: absolute; top: 0; right: 0; background: #00ff88; color: #000;
-    padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 15px;
-}
-.card.wide { max-width: 100%; flex-basis: 100%; border-color: #ffd700; }
-
-/* ФУТЕР */
-footer { text-align: center; padding: 50px; color: #555; background: #000; margin-top: 50px; }
-
-/* АДАПТИВНОСТЬ */
-@media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .card.popular { transform: scale(1); }
-    .card.popular:hover { transform: translateY(-10px); }
-}
+    position: absolute; top: 0; right: 0; background: var(--accent); color: #000;
+    padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 15px; fo
