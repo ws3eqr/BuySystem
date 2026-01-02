@@ -3,195 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WS3EQR | PREMIUM SHOP</title>
+    <title>WS3EQR | ULTIMATE STORE</title>
+    <!-- Иконки и Шрифты -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;600;800&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Навигация (Плавающая) -->
-    <nav class="navbar">
+    <!-- Живой фон (всегда сзади) -->
+    <div class="animated-bg"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- Навигация -->
+    <nav>
         <div class="logo">WS3EQR</div>
-        <div class="nav-links">
-            <a href="#web">WEB</a>
-            <a href="#gfx">DESIGN</a>
-            <a href="#mc">MINECRAFT</a>
-        </div>
-        <a href="https://t.me/ws3eqr" class="contact-btn">СВЯЗЬ</a>
+        <a href="https://t.me/ws3eqr" class="tg-btn"><i class="fa-brands fa-telegram"></i> СВЯЗАТЬСЯ</a>
     </nav>
 
-    <!-- 1. ГЛАВНЫЙ ЭКРАН (HERO) -->
+    <!-- Главный экран -->
     <header class="hero">
-        <div class="hero-bg"></div>
         <div class="hero-content">
-            <h1>DIGITAL<br>CREATION</h1>
-            <p>ВЕБ-РАЗРАБОТКА • ДИЗАЙН • ИГРОВЫЕ СЕРВЕРА</p>
-            <div class="hero-stats">
-                <div class="stat-box">
-                    <span>300+</span>
-                    <small>Заказов</small>
-                </div>
-                <div class="stat-box">
-                    <span>100%</span>
-                    <small>Качество</small>
-                </div>
-                <div class="stat-box">
-                    <span>24/7</span>
-                    <small>Саппорт</small>
-                </div>
-            </div>
+            <h1>DIGITAL<br><span>MARKET</span></h1>
+            <p>ЛУЧШИЕ РЕШЕНИЯ ДЛЯ ТВОЕГО ПРОЕКТА</p>
+            <a href="#shop" class="scroll-down">ВЫБРАТЬ УСЛУГУ ▼</a>
         </div>
     </header>
 
-    <!-- 2. СЕКЦИЯ WEB (BENTO GRID) -->
-    <section id="web" class="full-section">
-        <h2 class="section-title">ВЕБ-РАЗРАБОТКА</h2>
-        <div class="bento-grid">
-            
+    <!-- Секция магазина -->
+    <div id="shop" class="container">
+
+        <!-- КАТЕГОРИЯ: САЙТЫ -->
+        <div class="category-header">
+            <h2><i class="fa-solid fa-code"></i> ВЕБ-РАЗРАБОТКА</h2>
+        </div>
+        <div class="cards-wrapper">
             <!-- Нуб -->
-            <div class="card small-card tilt">
-                <div class="card-visual visual-1"><i class="fa-solid fa-code"></i></div>
-                <div class="card-info">
-                    <h3>НУБ-ТАРИФ</h3>
-                    <p>HTML Визитка. Быстрый старт.</p>
-                    <div class="price-row">
-                        <span class="price">75 ₽</span>
-                        <a href="https://t.me/ws3eqr" class="buy-icon"><i class="fa-solid fa-cart-shopping"></i></a>
-                    </div>
-                </div>
+            <div class="card">
+                <div class="glow"></div>
+                <h3>НУБ-ТАРИФ</h3>
+                <div class="price">75 ₽</div>
+                <ul class="features">
+                    <li>Простой HTML</li>
+                    <li>Текст + Картинки</li>
+                    <li>Быстрый старт</li>
+                </ul>
+                <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
-
             <!-- Игрок -->
-            <div class="card small-card tilt">
-                <div class="card-visual visual-2"><i class="fa-brands fa-css3-alt"></i></div>
-                <div class="card-info">
-                    <h3>ИГРОК-ТАРИФ</h3>
-                    <p>Красивый стиль. CSS анимации.</p>
-                    <div class="price-row">
-                        <span class="price">150 ₽</span>
-                        <a href="https://t.me/ws3eqr" class="buy-icon"><i class="fa-solid fa-cart-shopping"></i></a>
-                    </div>
-                </div>
+            <div class="card">
+                <div class="glow"></div>
+                <h3>ИГРОК-ТАРИФ</h3>
+                <div class="price">150 ₽</div>
+                <ul class="features">
+                    <li>HTML + CSS</li>
+                    <li>Красивый дизайн</li>
+                    <li>Адаптация</li>
+                </ul>
+                <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
-
-            <!-- Про (Большая карточка) -->
-            <div class="card large-card tilt">
-                <div class="badge">ХИТ ПРОДАЖ</div>
-                <div class="card-visual visual-3"><i class="fa-brands fa-js"></i></div>
-                <div class="card-info">
-                    <h3>ПРО-ТАРИФ</h3>
-                    <p>Интерактив. Скрипты. JS Логика. Полный функционал для бизнеса.</p>
-                    <div class="price-row">
-                        <span class="price">235 ₽</span>
-                        <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
-                    </div>
-                </div>
+            <!-- Про -->
+            <div class="card popular">
+                <div class="badge">ХИТ</div>
+                <div class="glow"></div>
+                <h3>ПРО-ТАРИФ</h3>
+                <div class="price">235 ₽</div>
+                <ul class="features">
+                    <li>HTML + CSS + JS</li>
+                    <li>Анимации</li>
+                    <li>Интерактив</li>
+                </ul>
+                <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
-
             <!-- Босс -->
-            <div class="card wide-card tilt">
-                <div class="card-visual visual-4"><i class="fa-solid fa-laptop-code"></i></div>
-                <div class="card-info">
-                    <h3>БОСС-ТАРИФ</h3>
-                    <p>Полноценный лендинг под ключ. SEO, Адаптив.</p>
-                    <div class="price-row">
-                        <span class="price">300 ₽</span>
-                        <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
-                    </div>
-                </div>
+            <div class="card">
+                <div class="glow"></div>
+                <h3>БОСС-ТАРИФ</h3>
+                <div class="price">300 ₽</div>
+                <ul class="features">
+                    <li>Full Лендинг</li>
+                    <li>Мобильная версия</li>
+                    <li>SEO настройка</li>
+                </ul>
+                <a href="https://t.me/ws3eqr" class="buy-btn">ЗАКАЗАТЬ</a>
             </div>
-
-            <!-- Гигант (Самая большая) -->
-            <div class="card giant-card tilt">
-                <div class="badge gold">PREMIUM</div>
-                <div class="card-visual visual-5">
-                    <i class="fa-solid fa-crown"></i>
-                    <span>КОРОЛЕВСКИЙ</span>
-                </div>
-                <div class="card-info">
-                    <p>Максимальный пакет. Админка, Базы данных, Сложная логика, Исходный код.</p>
-                    <div class="price-row">
-                        <span class="price gold-text">600 ₽</span>
-                        <a href="https://t.me/ws3eqr" class="buy-btn gold-btn">ОФОРМИТЬ VIP</a>
-                    </div>
-                </div>
+            <!-- Король -->
+            <div class="card wide">
+                <div class="glow"></div>
+                <h3>КОРОЛЕВСКИЙ</h3>
+                <div class="price gold-text">600 ₽</div>
+                <p>Полный комплект. Админка, база данных, сложная логика, поддержка 24/7.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn gold-btn">ЗАКАЗАТЬ VIP</a>
             </div>
         </div>
-    </section>
 
-    <!-- 3. СЕКЦИЯ ДИЗАЙН (SLIDER STYLE) -->
-    <section id="gfx" class="full-section dark-bg">
-        <h2 class="section-title">ГРАФИКА & АВАТАРКИ</h2>
-        <div class="gfx-container">
-            <div class="gfx-card tilt">
-                <div class="gfx-img img-1"></div>
-                <div class="gfx-content">
-                    <h3>НУБ АВА</h3>
-                    <span>40 ₽</span>
-                </div>
+        <!-- КАТЕГОРИЯ: АВАТАРКИ -->
+        <div class="category-header">
+            <h2><i class="fa-solid fa-paintbrush"></i> ДИЗАЙН & АВЫ</h2>
+        </div>
+        <div class="cards-wrapper">
+            <div class="card">
+                <div class="glow"></div>
+                <h3>НУБ АВА</h3>
+                <div class="price">40 ₽</div>
+                <p>Текст на фоне, цветокоррекция.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
-            <div class="gfx-card tilt">
-                <div class="gfx-img img-2"></div>
-                <div class="gfx-content">
-                    <h3>ИГРОК АВА</h3>
-                    <span>60 ₽</span>
-                </div>
+            <div class="card">
+                <div class="glow"></div>
+                <h3>ИГРОК АВА</h3>
+                <div class="price">60 ₽</div>
+                <p>Эффекты, рамки, детализация.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
-            <div class="gfx-card tilt active">
-                <div class="badge">PRO</div>
-                <div class="gfx-img img-3"></div>
-                <div class="gfx-content">
-                    <h3>ПРО АВА</h3>
-                    <span>100 ₽</span>
-                </div>
+            <div class="card popular">
+                <div class="badge">ТОП</div>
+                <div class="glow"></div>
+                <h3>ПРО АВА</h3>
+                <div class="price">100 ₽</div>
+                <p>3D текст, глитч, профессиональный арт.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
             </div>
         </div>
-    </section>
 
-    <!-- 4. СЕКЦИЯ MINECRAFT (SERVER STYLE) -->
-    <section id="mc" class="full-section mc-bg">
-        <div class="overlay"></div>
-        <h2 class="section-title" style="position:relative; z-index:2;">MINECRAFT SERVERS</h2>
-        <div class="server-list">
-            
-            <div class="server-row tilt">
-                <div class="srv-icon"><i class="fa-solid fa-cube"></i></div>
-                <div class="srv-info">
-                    <h4>МИНИМАЛЬНЫЙ</h4>
-                    <p>Чистое ядро + Настройка портов</p>
-                </div>
-                <div class="srv-price">40 ₽</div>
-                <a href="https://t.me/ws3eqr" class="srv-btn">+</a>
-            </div>
-
-            <div class="server-row tilt">
-                <div class="srv-icon"><i class="fa-solid fa-server"></i></div>
-                <div class="srv-info">
-                    <h4>БАЗОВЫЙ</h4>
-                    <p>Плагины AuthMe, Essentials, Perms</p>
-                </div>
-                <div class="srv-price">100 ₽</div>
-                <a href="https://t.me/ws3eqr" class="srv-btn">+</a>
-            </div>
-
-            <div class="server-row highlight tilt">
-                <div class="srv-icon"><i class="fa-solid fa-dragon"></i></div>
-                <div class="srv-info">
-                    <h4>ПРО СБОРКА</h4>
-                    <p>Спавн, Донат, Меню, Защита</p>
-                </div>
-                <div class="srv-price">200 ₽</div>
-                <a href="https://t.me/ws3eqr" class="srv-btn">КУПИТЬ</a>
-            </div>
-
+        <!-- КАТЕГОРИЯ: МАЙНКРАФТ -->
+        <div class="category-header">
+            <h2><i class="fa-solid fa-cubes"></i> MINECRAFT СЕРВЕРА</h2>
         </div>
-    </section>
+        <div class="cards-wrapper">
+            <div class="card">
+                <div class="glow"></div>
+                <h3>МИНИМУМ</h3>
+                <div class="price">40 ₽</div>
+                <p>Установка ядра, порты.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
+            </div>
+            <div class="card">
+                <div class="glow"></div>
+                <h3>БАЗОВЫЙ</h3>
+                <div class="price">100 ₽</div>
+                <p>Плагины AuthMe, Essentials.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
+            </div>
+            <div class="card popular">
+                <div class="glow"></div>
+                <h3>ПРО СБОРКА</h3>
+                <div class="price">200 ₽</div>
+                <p>Спавн, Донат, Меню, Защита.</p>
+                <a href="https://t.me/ws3eqr" class="buy-btn">КУПИТЬ</a>
+            </div>
+        </div>
+
+    </div>
 
     <footer>
-        <h2>WS3EQR</h2>
-        <p>Создаем будущее сегодня.</p>
-        <a href="https://t.me/ws3eqr">TELEGRAM</a>
+        <p>WS3EQR PRODUCTION © 2024</p>
     </footer>
 
     <script src="script.js"></script>
